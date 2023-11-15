@@ -108,7 +108,7 @@ class PageSimple(tk.Frame):
         self._callback_change_year()
         self._update_lists()
         self._save_obj.load(component=self._surfacesoak, user=self.user.name)
-        self._notebook.select_frame('Processering')
+        self._notebook.select_frame('Processing')
 
     def close(self):
         self._close_manual_qc()
@@ -128,10 +128,10 @@ class PageSimple(tk.Frame):
                       pady=20,
                       sticky='nsew')
 
-        self._frame_paths = tk.LabelFrame(self, text='Sökvägar')
+        self._frame_paths = tk.LabelFrame(self, text='Search paths')
         self._frame_paths.grid(row=0, column=0, **layout)
 
-        self._notebook = tkw.NotebookWidget(self, frames=['Processering', 'Skicka via FTP'], row=1, column=0, **layout)
+        self._notebook = tkw.NotebookWidget(self, frames=['Processing', 'Skicka via FTP'], row=1, column=0, **layout)
 
         tkw.grid_configure(self, nr_rows=2)
 
@@ -139,18 +139,18 @@ class PageSimple(tk.Frame):
         self._build_ftp_frame()
 
     def _build_processing_frame(self):
-        frame = self._notebook.get_frame('Processering')
+        frame = self._notebook.get_frame('Processing')
         layout = dict(padx=20,
                       pady=20,
                       sticky='nsew')
 
-        self._frame_options = tk.LabelFrame(frame, text='Val')
+        self._frame_options = tk.LabelFrame(frame, text='Choose')
         self._frame_options.grid(row=0, column=0, **layout)
 
-        self._frame_files = tk.LabelFrame(frame, text='Filer i källmappen')
+        self._frame_files = tk.LabelFrame(frame, text='Existing raw files in source path')
         self._frame_files.grid(row=0, column=1, **layout)
 
-        self._frame_actions = tk.LabelFrame(frame, text='Vad vill du göra?')
+        self._frame_actions = tk.LabelFrame(frame, text='What would you like to do?')
         self._frame_actions.grid(row=0, column=2, **layout)
 
         tkw.grid_configure(frame, nr_rows=1, nr_columns=3)
@@ -180,39 +180,39 @@ class PageSimple(tk.Frame):
 
         r = 0
         self._config_path = components.DirectoryLabelText(frame, 'config_path',
-                                                                   title='Rotkatalog för configfiler:',
+                                                                   title='path config files:',
                                                                    row=r, column=0, **layout)
 
         r += 1
         self._local_data_path_source = components.DirectoryButtonText(frame, 'local_data_path_source',
-                                                                      title='Välj källmapp',
+                                                                      title='path raw data',
                                                                       row=r, column=0, **layout)
 
         r += 1
         self._local_data_path_root = components.DirectoryLabelText(frame, 'local_data_path_root',
-                                                                          title='Rotkatalog för lokal data:',
+                                                                          title='path local data:',
                                                                           row=r, column=0, **layout)
 
         r += 1
         self._server_data_path_root = components.DirectoryButtonText(frame, 'server_data_path_root',
-                                                                      title='Rotkatalog för data på servern:',
+                                                                      title='path server:',
                                                                       row=r, column=0, **layout)
 
         r += 1
         self._asvp_files_directory = components.DirectoryButtonText(frame, 'asvp_files_directory',
-                                                                     title='Spara asvp filer här:',
+                                                                     title='save asvp files here:',
                                                                      row=r, column=0, **layout)
 
         r += 1
-        self._delete_old_asvp_files = components.Checkbutton(frame, 'delete_old_asvp_files', title='Ta bort gamla asvp-filer', row=r,
+        self._delete_old_asvp_files = components.Checkbutton(frame, 'delete_old_asvp_files', title='delete old asvp files', row=r,
                                                column=0, **layout)
 
         r += 1
-        self._year = components.YearEntry(frame, 'year', title='År', row=r, column=0, **layout)
+        self._year = components.YearEntry(frame, 'year', title='year', row=r, column=0, **layout)
         self._year.set(str(datetime.datetime.now().year))
 
         r += 1
-        self._button_update = tk.Button(self._frame_paths, text='Uppdatera',
+        self._button_update = tk.Button(self._frame_paths, text='update',
                                         command=self._update_files)
         self._button_update.grid(row=1, column=0, padx=5, pady=5, sticky='sw')
 
@@ -227,11 +227,11 @@ class PageSimple(tk.Frame):
         tkw.grid_configure(self._frame_options)
 
         r = 0
-        self._platform = components.LabelDropdownList(frame, 'platform', title='Platform', row=r, column=0,
+        self._platform = components.LabelDropdownList(frame, 'platform', title='platform', row=r, column=0,
                                                       **layout)
 
         r += 1
-        self._surfacesoak = components.LabelDropdownList(frame, 'surfacesoak', title='Surfacesoak',
+        self._surfacesoak = components.LabelDropdownList(frame, 'surfacesoak', title='surface soak',
                                                                 width=15,
                                                                 row=r, column=0, **layout)
 
@@ -295,15 +295,15 @@ class PageSimple(tk.Frame):
 
         r = 0
 
-        self._button_run = tk.Button(frame, text='Processera', command=self._start_process, width=20, bg=self._yes_color)
+        self._button_run = tk.Button(frame, text='process', command=self._start_process, width=20, bg=self._yes_color)
         self._button_run.grid(row=r, column=0, **layout)
 
         r += 1
-        self._button_open_qc = tk.Button(frame, text='Öppna manuell granskning', command=self._open_manual_qc, width=20, bg=self._yes_color)
+        self._button_open_qc = tk.Button(frame, text='manual quality control', command=self._open_manual_qc, width=20, bg=self._yes_color)
         self._button_open_qc.grid(row=r, column=0, **layout)
 
         r += 1
-        self._button_close_qc = tk.Button(frame, text='Stäng manuell granskning\nKopiera till server', command=self._close_manual_qc, width=20)
+        self._button_close_qc = tk.Button(frame, text='close quality control\ncopy to server', command=self._close_manual_qc, width=20)
         self._button_close_qc.grid(row=r, column=0, **layout)
 
         tkw.grid_configure(frame, nr_rows=r + 1, nr_columns=1)
@@ -806,5 +806,7 @@ def get_id_from_key(key):
 
 
 def get_year_from_key(key):
-    return key.split('_')[2][:4]
-
+    try:
+        return key.split('_')[2][:4]
+    except IndexError:
+        return '2023'  
